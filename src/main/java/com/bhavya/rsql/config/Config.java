@@ -1,5 +1,6 @@
 package com.bhavya.rsql.config;
 
+import cz.jirutka.rsql.parser.RSQLParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -16,6 +17,10 @@ public class Config {
     dataSource.setPassword("");
 
     return dataSource;
+  }
+
+  @Bean RSQLParser parser() {
+    return new RSQLParser();
   }
 
 }
