@@ -3,7 +3,6 @@ package com.bhavya.rsql.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Entity(name = "department")
@@ -21,7 +20,5 @@ public class DepartmentEntity {
   @Basic
   private String location;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "departmentEntity")
-  private List<CourseEntity> courseEntity;
 }
 

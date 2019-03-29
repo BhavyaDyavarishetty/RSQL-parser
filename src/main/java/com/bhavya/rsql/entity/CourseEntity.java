@@ -21,7 +21,8 @@ public class CourseEntity {
   @Basic
   private Integer duration;
 
-  @ManyToOne
+  @OneToOne
+  @JoinColumn(name = "department_id")
   private DepartmentEntity departmentEntity;
 
   @ManyToMany
