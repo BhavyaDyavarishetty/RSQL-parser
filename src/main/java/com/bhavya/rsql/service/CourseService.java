@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service public class CourseService {
 
   @Autowired private RSQLParser parser;
@@ -25,6 +27,14 @@ import org.springframework.stereotype.Service;
     Specification<CourseEntity> spec = rootNode.accept(new CustomRsqlVisitor<>());
     CourseEntity courseEntity = courseRepository.findOne(spec)
         .orElseThrow(() -> new ObjectNotFoundException("Course not found"));
+
+    return courseConverter.convert(courseEntity);
+  }
+
+  public List<Course> getCourses(String filter) throws ObjectNotFoundException {
+    Node rootNode = parser.parse(filter);
+    Specification<CourseEntity> spec = rootNode.accept(new CustomRsqlVisitor<>());
+    List<CourseEntity> courseEntity = courseRepository.findAll(spec);
 
     return courseConverter.convert(courseEntity);
   }

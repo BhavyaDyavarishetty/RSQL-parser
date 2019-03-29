@@ -21,7 +21,7 @@ public class DepartmentEntity {
   @Basic
   private String location;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "departmentEntity")
   private List<CourseEntity> courseEntity;
 }
 

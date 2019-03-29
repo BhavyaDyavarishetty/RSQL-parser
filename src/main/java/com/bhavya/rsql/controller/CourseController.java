@@ -6,6 +6,8 @@ import com.bhavya.rsql.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class CourseController {
 
@@ -20,8 +22,13 @@ public class CourseController {
     return "OK";
   }
 
-  @GetMapping(value = "/courses")
+  @GetMapping(value = "/course")
   public Course getCourse(@RequestParam(value = "filter") String filter) throws ObjectNotFoundException {
     return courseService.getCourse(filter);
+  }
+
+  @GetMapping(value = "/courses")
+  public List<Course> getCourses(@RequestParam(value = "filter") String filter) throws ObjectNotFoundException {
+    return courseService.getCourses(filter);
   }
 }
