@@ -15,9 +15,9 @@ public class CourseConverter {
   public Course convert(CourseEntity  courseEntity){
     Course course = new Course();
     BeanUtils.copyProperties(courseEntity, course);
-    if(courseEntity.getDepartmentEntity()!= null){
+    if(courseEntity.getDepartment()!= null){
       Department department = new Department();
-      BeanUtils.copyProperties(courseEntity.getDepartmentEntity(), department);
+      BeanUtils.copyProperties(courseEntity.getDepartment(), department);
       course.setDepartment(department);
     }
     return course;

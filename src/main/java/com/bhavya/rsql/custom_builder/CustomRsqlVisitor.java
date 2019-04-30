@@ -10,8 +10,8 @@ public class CustomRsqlVisitor<T> implements RSQLVisitor<Specification<T>, Void>
 
   private RsqlSpecificationBuilder<T> builder;
 
-  public CustomRsqlVisitor() {
-    builder = new RsqlSpecificationBuilder<>();
+  public CustomRsqlVisitor(RsqlSpecificationBuilder<T> builder) {
+    this.builder = builder;
   }
 
   @Override public Specification<T> visit(AndNode node, Void param) {

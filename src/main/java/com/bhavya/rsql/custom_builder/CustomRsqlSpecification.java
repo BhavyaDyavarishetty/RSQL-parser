@@ -13,17 +13,23 @@ public class CustomRsqlSpecification<T> implements Specification<T> {
   private String property;
   private ComparisonOperator operator;
   private List<String> arguments;
+  private RsqlPathBuilder pathBuilder;
 
-  CustomRsqlSpecification(String property, ComparisonOperator operator, List<String> arguments) {
+  CustomRsqlSpecification(String property, ComparisonOperator operator, List<String> arguments, RsqlPathBuilder pathBuilder) {
     this.property = property;
     this.operator = operator;
     this.arguments = arguments;
+    this.pathBuilder = pathBuilder;
   }
 
   @Override public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-    Path<String> path = root.get(property);
-    Class<? extends Object> type = path.getJavaType();
-    List<Object> args = castArguments(type);
+    Expression path = null;
+    try {
+      path = pathBuilder.getAttributePath(property, root);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    List<Object> args = castArguments(path.getJavaType());
     Object argument = args.get(0);
 
     switch (Objects.requireNonNull(RsqlOperatorsEnum.getRsqlOperator(operator))) {

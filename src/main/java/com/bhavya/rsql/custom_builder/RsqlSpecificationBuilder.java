@@ -4,7 +4,10 @@ import cz.jirutka.rsql.parser.ast.ComparisonNode;
 import cz.jirutka.rsql.parser.ast.LogicalNode;
 import cz.jirutka.rsql.parser.ast.LogicalOperator;
 import cz.jirutka.rsql.parser.ast.Node;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
+import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +15,15 @@ import java.util.stream.Collectors;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
-class RsqlSpecificationBuilder<T> {
+public class RsqlSpecificationBuilder<T> {
+
+  @Autowired
+  private RsqlPathBuilder pathBuilder;
+
+  public RsqlSpecificationBuilder(RsqlPathBuilder pathBuilder) {
+    Assert.notNull(pathBuilder, "A persistence manager is required for filter queries.");
+    this.pathBuilder = pathBuilder;
+  }
 
   private Specification<T> createSpecification(Node node) {
     if (node instanceof LogicalNode) {
@@ -46,7 +57,8 @@ class RsqlSpecificationBuilder<T> {
   }
 
   public Specification<T> createSpecification(ComparisonNode comparisonNode) {
-    return where(new CustomRsqlSpecification<T>(comparisonNode.getSelector(), comparisonNode.getOperator(),
-        comparisonNode.getArguments()));
+
+    Specification<T> spec = new CustomRsqlSpecification<T>(comparisonNode.getSelector(), comparisonNode.getOperator(), comparisonNode.getArguments(), pathBuilder);
+    return Specifications.where(spec);
   }
 }

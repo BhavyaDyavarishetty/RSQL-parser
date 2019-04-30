@@ -23,7 +23,7 @@ public class CourseEntity {
 
   @OneToOne
   @JoinColumn(name = "department_id")
-  private DepartmentEntity departmentEntity;
+  private DepartmentEntity department;
 
   @ManyToMany
   private List<StudentEntity> students;
